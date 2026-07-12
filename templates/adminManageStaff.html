@@ -1,0 +1,152 @@
+{% set pageTitle = "Admin | Manage Staff" %}
+{% set pageID = 13 %}
+{% extends 'baseTemplate.tpl.html' %}
+
+    {% block ContentArea %}
+    <div class="container-fluid">
+        <div class="row" style="min-height: 86vh;">
+            
+            <!-- Sidebar Start-->
+            {% include 'sidebar.inc.html' %}
+
+            <!-- Sidebar End-->
+
+            <!-- Content Area Start-->
+            <div class="col-10 offset-2 p-4 bg-light rounded">
+                <!-- Page Header Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-left: 5px solid purple;">    
+                            <div class="card-body">
+                                <h4 class="text-uppercase" style="color: purple;">Manage Staff</h4>
+                                <p class="h5 text-success">Manage registered staffs from below list</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page Header End-->
+
+                <!-- Tabular Info Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-top: 5px solid purple;">
+                            <div class="card-header">
+                                <small class="text-uppercase"><strong>Staff Requests</strong></small>
+                            </div>
+
+                            <!-- Tab Selector Start -->
+                            <ul class="nav nav-tabs mb-2">
+                                <li class="nav-item">
+                                    <a class="nav-link {% if request.args.get('tabID', '1') == '1' %} active {% endif %}" href="?tabID=1">Pending ({{ count_deactive }})</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {% if request.args.get('tabID') == '2' %} active {% endif %}" href="?tabID=2">Approved ({{ count_active }})</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {% if request.args.get('tabID') == '3' %} active {% endif %}" href="?tabID=3">Blacklisted ({{ count_blacklisted }})</a>
+                                </li>
+                            </ul>
+                            <!-- Tab Selector End -->
+
+                            <div class="card-body p-0">
+                                
+                                {% if request.args.get('tabID', '1') == '1' %}
+                                <table class="table table-sm table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">Staff ID</th>
+                                            <th class="text-center">Name</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Contact</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for staff in staffs if staff.user.status == "deactive" %}
+                                    <tr>
+                                        <th class="text-center">{{ staff.id }}</th>
+                                        <td>{{ staff.full_name }}</td>
+                                        <td>{{ staff.user.username }}</td>
+                                        <td class="text-center">{{ staff.contact_no }}</td>
+                                        <td class="text-center">{{ staff.user.status.capitalize() }}</td>
+                                        <td class="text-center">
+                                            <a class="btn btn-sm btn-success" href="/adminManageStaff/approve/{{ staff.user.id }}">Approve</a>
+                                            <a class="btn btn-sm btn-danger" href="/adminManageStaff/delete/{{ staff.user.id }}">Reject</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% endif  %}
+                                
+                                {% if request.args.get('tabID') == '2'  %}
+                                <table class="table table-sm table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">Staff ID</th>
+                                            <th class="text-center">Name</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Contact</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>                                       
+                                    {% for staff in staffs if staff.user.status == "active" %}
+                                        <tr>
+                                            <th class="text-center">{{ staff.id }}</th>
+                                            <td>{{ staff.full_name }}</td>
+                                            <td>{{ staff.user.username }}</td>
+                                            <td class="text-center">{{ staff.contact_no }}</td>
+                                            <td class="text-center">{{ staff.user.status.capitalize() }}</td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm btn-warning" href="/adminManageStaff/deactive/{{ staff.user.id }}">Deactive</a>
+                                                <a class="btn btn-sm btn-danger" href="/adminManageStaff/blacklist/{{ staff.user.id }}">Blacklist</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% endif  %}
+
+                                {% if request.args.get('tabID') == '3'  %}
+                                <table class="table table-sm table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">Staff ID</th>
+                                            <th class="text-center">Name</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Contact</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for staff in staffs if staff.user.status == "blacklisted" %}
+                                        <tr>
+                                            <th class="text-center">{{ staff.id }}</th>
+                                            <td>{{ staff.full_name }}</td>
+                                            <td>{{ staff.user.username }}</td>
+                                            <td class="text-center">{{ staff.contact_no }}</td>
+                                            <td class="text-center">{{ staff.user.status.capitalize() }}</td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm btn-success" href="/adminManageStaff/active/{{ staff.user.id }}">Activate</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% endif  %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tabular Info End-->
+
+            </div>
+            <!-- Content Area End-->
+        </div>
+    </div>
+    {% endblock %}

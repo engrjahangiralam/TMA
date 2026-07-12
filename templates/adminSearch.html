@@ -1,0 +1,196 @@
+{% set pageTitle = "Admin | Search" %}
+{% set pageID = 17 %}
+{% extends 'baseTemplate.tpl.html' %}
+
+    {% block ContentArea %}
+    <div class="container-fluid">
+        <div class="row" style="min-height: 86vh;">
+            
+            <!-- Sidebar Start-->
+            {% include 'sidebar.inc.html' %}
+
+            <!-- Sidebar End-->
+
+            <!-- Content Area Start-->
+            <div class="col-10 offset-2 p-4 bg-light rounded">
+                <!-- Page Header Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-left: 5px solid purple;">    
+                            <div class="card-body">
+                                <h4 class="text-uppercase" style="color: purple;">Search</h4>
+                                <p class="h5 text-success">Enter ID or Name for searching a Trek / Staff / Trekker</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page Header End-->
+
+                <!-- Search Box Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card">
+                            <form action="#" method="post">
+                                <div class="input-group">
+                                    <input class="form-control border-primary" type="search" name="q" placeholder="Search by ID or Name of a Trek / Staff / Trekker" required>
+                                    <button class="btn btn-sm btn-primary" type="submit"><i class="bi bi-search"></i> Search</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Search Box End-->
+
+                <!-- Tabular Info Start-->
+                {% if treks %}
+                    <div class="row pt-2 mt-2 mb-4">
+                        <div class="col">
+                            <div class="card" style="border-top: 5px solid purple;">
+                                <div class="card-header d-flex justify-content-between">
+                                    <small class="text-uppercase"><strong>Treks</strong></small>
+                                </div>
+
+                                <div class="card-body p-0">
+                                    <table class="table table-sm table-bordered">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th class="text-center">Trek ID</th>
+                                                <th class="text-center">Trek Name</th>
+                                                <th class="text-center">Location</th>
+                                                <th class="text-center">Difficulty</th>
+                                                <th class="text-center">Slots</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for trek in treks %}
+                                            <tr>
+                                                <th class="text-center">{{ trek.id }}</th>
+                                                <td>{{ trek.trek_name }}</td>
+                                                <td>{{ trek.location }}</td>
+                                                <td class="text-center">{{ trek.difficulty.capitalize() }}</td>
+                                                <td class="text-center">{{ trek.total_slots }}</td>
+                                                <td class="text-center">{{ trek.status.capitalize() }}</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-sm btn-success me-2" href="/adminManageTreks/edit/{{ trek.id }}"><i class="bi bi-pencil"></i></a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {% if staffs %}
+                    <div class="row pt-2 mt-2 mb-4">
+                        <div class="col">
+                            <div class="card" style="border-top: 5px solid purple;">
+                                <div class="card-header">
+                                    <small class="text-uppercase"><strong>Staffs</strong></small>
+                                </div>
+
+                                <div class="card-body p-0">
+                                    <table class="table table-sm table-bordered">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th class="text-center">Staff ID</th>
+                                                <th class="text-center">Name</th>
+                                                <th class="text-center">Email</th>
+                                                <th class="text-center">Contact</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for staff in staffs %}
+                                            <tr>
+                                                <th class="text-center">{{ staff.id }}</th>
+                                                <td>{{ staff.full_name }}</td>
+                                                <td>{{ staff.user.username }}</td>
+                                                <td class="text-center">{{ staff.contact_no }}</td>
+                                                <td class="text-center">{{ staff.user.status.capitalize() }}</td>
+                                                {% if staff.user.status == "deactive" %}
+                                                    <td class="text-center">
+                                                        <a class="btn btn-sm btn-success" href="/adminManageStaff/approve/{{ staff.user.id }}">Approve</a>
+                                                        <a class="btn btn-sm btn-danger" href="/adminManageStaff/delete/{{ staff.user.id }}">Reject</a>
+                                                    </td>
+                                                {% elif staff.user.status == "active" %}
+                                                    <td class="text-center">
+                                                        <a class="btn btn-sm btn-warning" href="/adminManageStaff/deactive/{{ staff.user.id }}">Deactive</a>
+                                                        <a class="btn btn-sm btn-danger" href="/adminManageStaff/blacklist/{{ staff.user.id }}">Blacklist</a>
+                                                    </td>
+                                                {% elif staff.user.status == "blacklisted" %}
+                                                    <td class="text-center">
+                                                        <a class="btn btn-sm btn-success" href="/adminManageStaff/active/{{ staff.user.id }}">Activate</a>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if trekkers %}
+                    <div class="row pt-2 mt-2 mb-4">
+                        <div class="col">
+                            <div class="card" style="border-top: 5px solid purple;">
+                                <div class="card-header">
+                                    <small class="text-uppercase"><strong>Users (Trekkers)</strong></small>
+                                </div>
+
+                                <div class="card-body p-0">
+                                    <table class="table table-sm table-bordered">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th class="text-center">Trekker ID</th>
+                                                <th class="text-center">Name</th>
+                                                <th class="text-center">Email</th>
+                                                <th class="text-center">Contact</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for trekker in trekkers %}
+                                            <tr>
+                                                <th class="text-center">{{ trekker.id }}</th>
+                                                <td>{{ trekker.full_name }}</td>
+                                                <td>{{ trekker.user.username }}</td>
+                                                <td class="text-center">{{ trekker.contact_no }}</td>
+                                                <td class="text-center">{{ trekker.user.status }}</td>
+                                                {% if trekker.user.status == "active" %}
+                                                    <td class="text-center">
+                                                        <a class="btn btn-sm btn-danger" href="/adminManageTrekker/blacklist/{{ trekker.user.id }}">Blacklist</a>
+                                                    </td>
+                                                {% elif trekker.user.status == "blacklisted" %}
+                                                    <td class="text-center">
+                                                        <a class="btn btn-sm btn-success" href="/adminManageTrekker/active/{{ trekker.user.id }}">Active</a>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Tabular Info End-->
+
+            </div>
+            <!-- Content Area End-->
+        </div>
+    </div>
+    {% endblock %}

@@ -1,0 +1,111 @@
+{% set pageTitle = "Trekker Dashboard" %}
+{% set pageID = 31 %}
+{% extends 'baseTemplate.tpl.html' %}
+
+    {% block ContentArea %}
+    <div class="container-fluid">
+        <div class="row" style="min-height: 86vh;">
+            
+            <!-- Sidebar Start-->
+            {% include 'sidebar.inc.html' %}
+
+            <!-- Sidebar End-->
+
+            <!-- Content Area Start-->
+            <div class="col-10 offset-2 p-4 bg-light rounded">
+                <!-- Page Header Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-left: 5px solid purple;">    
+                            <div class="card-body">
+                                <h4 class="text-uppercase" style="color: purple;">User (Trekker) Dashboard</h4>
+                                <p class="h5 text-success">Welcome <em>{{ session['full_name'] }}</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page Header End-->
+
+                <!-- Tabular Info Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-top: 5px solid purple;">    
+                            <div class="card-header">
+                                <small class="text-uppercase"><strong>Available Treks</strong></small>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">Trek Name</th>
+                                            <th class="text-center">Location</th>
+                                            <th class="text-center">Difficulty</th>
+                                            <th class="text-center">Duration</th>
+                                            <th class="text-center">Available Slots</th>
+                                            <th class="text-center">Participants</th>
+                                            <th class="text-center">Remaining Slots</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for trek in treks %}
+                                        <tr>
+                                            <td>{{ trek.trek_name }}</td>
+                                            <td>{{ trek.location }}</td>
+                                            <td class="text-center">{{ trek.difficulty.capitalize() }}</td>
+                                            <td class="text-center">{{ trek.duration }} Days</td>
+                                            <td class="text-center">{{ trek.total_slots }}</td>
+                                            <td class="text-center">{{ trek.participant_count }}</td>
+                                            <td class="text-center">{{ (trek.total_slots) - (trek.participant_count) }}</td>
+                                            <td class="text-center"><a class="btn btn-sm btn-primary" href="{{ url_for('trekker_book_now', trek_id = trek.id) }}">Details</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tabular Info End-->
+
+                <!-- 2nd Tabular Info Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-top: 5px solid purple;">    
+                            <div class="card-header">
+                                <small class="text-uppercase"><strong>My Bookings</strong></small>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">Trek Name</th>
+                                            <th class="text-center">Booking Date</th>
+                                            <th class="text-center">Trek Dates</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for booking in bookings %}
+                                        <tr>
+                                            <td>{{ booking.trek.trek_name }}</td>
+                                            <td class="text-center">{{ booking.booking_date.strftime("%d %B %Y") }}</td>
+                                            <td class="text-center">{{ booking.trek.start_date.strftime("%d %B %Y") }} - {{ booking.trek.end_date.strftime("%d %B %Y") }}</td>
+                                            <td class="text-center">{{ booking.status.capitalize() }}</td>
+                                            <td class="text-center"><a class="btn btn-sm btn-outline-primary" href="{{ url_for('trekker_book_now', trek_id = booking.trek_id) }}">View Details</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  2nd Tabular Info End-->
+
+            </div>
+            <!-- Content Area End-->
+        </div>
+    </div>
+    {% endblock %}

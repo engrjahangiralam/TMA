@@ -1,0 +1,118 @@
+{% set pageTitle = "Admin | View / Manage Users (Trekkers)" %}
+{% set pageID = 14 %}
+{% extends 'baseTemplate.tpl.html' %}
+
+    {% block ContentArea %}
+    <div class="container-fluid">
+        <div class="row" style="min-height: 86vh;">
+            
+            <!-- Sidebar Start-->
+            {% include 'sidebar.inc.html' %}
+
+            <!-- Sidebar End-->
+
+            <!-- Content Area Start-->
+            <div class="col-10 offset-2 p-4 bg-light rounded">
+                <!-- Page Header Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-left: 5px solid purple;">    
+                            <div class="card-body">
+                                <h4 class="text-uppercase" style="color: purple;">View / Manage Users (Trekkers)</h4>
+                                <p class="h5 text-success">Manage registered users (trekkers) from below list</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page Header End-->
+
+                <!-- Tabular Info Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-top: 5px solid purple;">
+                            <div class="card-header">
+                                <small class="text-uppercase"><strong>Registered Users (Trekkers)</strong></small>
+                            </div>
+
+                            <!-- Tab Selector Start -->
+                            <ul class="nav nav-tabs mb-2">
+                                <li class="nav-item">
+                                    <a class="nav-link {% if request.args.get('tabID', '1') == '1' %} active {% endif %}" href="?tabID=1">Active ({{ count_active }})</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {% if request.args.get('tabID') == '2' %} active {% endif %}" href="?tabID=2">Blacklisted ({{ count_blacklisted }})</a>
+                                </li>
+                            </ul>
+                            <!-- Tab Selector End -->
+
+                            <div class="card-body p-0">
+                                
+                                {% if request.args.get('tabID', '1') == '1' %}
+                                <table class="table table-sm table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">Trekker ID</th>
+                                            <th class="text-center">Name</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Contact</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for trekker in trekkers if trekker.user.status == "active" %}
+                                    <tr>
+                                        <th class="text-center">{{ trekker.id }}</th>
+                                        <td>{{ trekker.full_name }}</td>
+                                        <td>{{ trekker.user.username }}</td>
+                                        <td class="text-center">{{ trekker.contact_no }}</td>
+                                        <td class="text-center">{{ trekker.user.status }}</td>
+                                        <td class="text-center">
+                                            <a class="btn btn-sm btn-danger" href="/adminManageTrekker/blacklist/{{ trekker.user.id }}">Blacklist</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% endif  %}
+
+                                {% if request.args.get('tabID') == '2'  %}
+                                <table class="table table-sm table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">Trekker ID</th>
+                                            <th class="text-center">Name</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Contact</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for trekker in trekkers if trekker.user.status == "blacklisted" %}
+                                        <tr>
+                                            <th class="text-center">{{ trekker.id }}</th>
+                                            <td>{{ trekker.full_name }}</td>
+                                            <td>{{ trekker.user.username }}</td>
+                                            <td class="text-center">{{ trekker.contact_no }}</td>
+                                            <td class="text-center">{{ trekker.user.status }}</td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm btn-success" href="/adminManageTrekker/active/{{ trekker.user.id }}">Active</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% endif  %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tabular Info End-->
+
+            </div>
+            <!-- Content Area End-->
+        </div>
+    </div>
+    {% endblock %}

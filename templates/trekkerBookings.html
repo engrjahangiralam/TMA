@@ -1,0 +1,69 @@
+{% set pageTitle = "Trekker | My Bookings" %}
+{% set pageID = 33 %}
+{% extends 'baseTemplate.tpl.html' %}
+
+    {% block ContentArea %}
+    <div class="container-fluid">
+        <div class="row" style="min-height: 86vh;">
+            
+            <!-- Sidebar Start-->
+            {% include 'sidebar.inc.html' %}
+
+            <!-- Sidebar End-->
+
+            <!-- Content Area Start-->
+            <div class="col-10 offset-2 p-4 bg-light rounded">
+                <!-- Page Header Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-left: 5px solid purple;">    
+                            <div class="card-body">
+                                <h4 class="text-uppercase" style="color: purple;">My Bookings</h4>
+                                <p class="h5 text-success">List of treks booked by <em>{{ session['full_name'] }}</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page Header End-->
+
+                <!-- Tabular Info Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-top: 5px solid purple;">    
+                            <div class="card-header">
+                                <small class="text-uppercase"><strong>My Bookings</strong></small>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">Trek Name</th>
+                                            <th class="text-center">Booking Date</th>
+                                            <th class="text-center">Trek Dates</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for booking in bookings %}
+                                        <tr>
+                                            <td>{{ booking.trek.trek_name }}</td>
+                                            <td class="text-center">{{ booking.booking_date.strftime("%d %B %Y") }}</td>
+                                            <td class="text-center">{{ booking.trek.start_date.strftime("%d %B %Y") }} - {{ booking.trek.end_date.strftime("%d %B %Y") }}</td>
+                                            <td class="text-center">{{ booking.status.capitalize() }}</td>
+                                            <td class="text-center"><a class="btn btn-sm btn-outline-primary" href="{{ url_for('trekker_book_now', trek_id = booking.trek_id) }}">View Details</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tabular Info End-->
+
+            </div>
+            <!-- Content Area End-->
+        </div>
+    </div>
+    {% endblock %}

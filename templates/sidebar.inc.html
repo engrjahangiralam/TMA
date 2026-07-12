@@ -1,0 +1,107 @@
+{% if session['user_role'] == 'admin' %}
+
+<!-- Admin Sidebar Start -->
+<div class="col-2 bg-dark position-fixed">
+    <ul class="nav  nav-pills flex-column">
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 11 %} active {% endif %}" href="{{ url_for('admin_dashboard') }}">
+                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 12 %} active {% endif %}" href="{{ url_for('admin_manage_treks') }}">
+                <i class="bi bi-airplane"></i> Manage Treks
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 13 %} active {% endif %}" href="{{ url_for('admin_manage_staff') }}">
+                <i class="bi bi-person-gear"></i> Manage Staffs
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 14 %} active {% endif %}" href="{{ url_for('admin_view_trekkers') }}">
+                <i class="bi bi-people"></i> View Users (Trekkers)
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 15 %} active {% endif %}" href="{{ url_for('admin_view_bookings') }}">
+                <i class="bi bi-calendar-check"></i> Bookings
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 16 %} active {% endif %}" href="{{ url_for('admin_treks_history') }}">
+                <i class="bi bi-clock-history"></i> Treks History
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 17 %} active {% endif %}" href="{{ url_for('admin_search') }}">
+                <i class="bi bi-search"></i> Search
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- Admin Sidebar End -->
+{% endif %}
+
+{% if session['user_role'] == 'staff' %}
+<!-- Staff Sidebar Start -->
+<div class="col-2 bg-dark position-fixed">
+    <ul class="nav  nav-pills flex-column">
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 21 %} active {% endif %}" href="{{ url_for('staff_dashboard') }}">
+                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 22 %} active {% endif %}" href="{{ url_for('staff_my_treks') }}">
+                <i class="bi bi-airplane"></i> My Treks
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 23 %} active {% endif %}" href="{{ url_for('staff_view_bookings') }}">
+                <i class="bi bi-calendar-check"></i> Bookings
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 24 %} active {% endif %}" href="{{ url_for('staff_profile') }}">
+                <i class="bi bi-person-circle"></i> Profile
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- Staff Sidebar End -->
+{% endif %}
+
+{% if session['user_role'] == 'trekker' %}
+<!-- Staff Sidebar Start -->
+<div class="col-2 bg-dark position-fixed">
+    <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 31 %} active {% endif %}" href="{{ url_for('trekker_dashboard') }}">
+                <i class="bi bi-grid-1x2-fill"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 32 %} active {% endif %}" href="{{ url_for('trekker_browse_treks') }}">
+                <i class="bi bi-search"></i> Browse Treks
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 33 %} active {% endif %}" href="{{ url_for('trekker_bookings') }}">
+                <i class="bi bi-calendar-check"></i> My Bookings
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 34 %} active {% endif %}" href="{{ url_for('trekker_history') }}">
+                <i class="bi bi-clock-history"></i> Trekking History
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light {% if pageID == 35 %} active {% endif %}" href="{{ url_for('trekker_profile') }}">
+                <i class="bi bi-person-circle"></i> Profile
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- Staff Sidebar End -->
+{% endif %}

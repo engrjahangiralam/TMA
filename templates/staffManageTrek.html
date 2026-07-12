@@ -1,0 +1,174 @@
+{% set pageTitle = "Staff | Manage Trek" %}
+{% set pageID = 22 %}
+{% extends 'baseTemplate.tpl.html' %}
+
+    {% block ContentArea %}
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!-- Sidebar Start-->
+            {% include 'sidebar.inc.html' %}
+
+            <!-- Sidebar End-->
+
+            <!-- Content Area Start-->
+            <div class="col-10 offset-2 p-4 bg-light rounded">
+                <!-- Page Header Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-left: 5px solid purple;">    
+                            <div class="card-body">
+                                <h4 class="text-uppercase" style="color: purple;">Manage Trek</h4>
+                                <p class="h5 text-success">Trek Name: {{ trek.trek_name }}</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page Header End-->
+
+                <!-- Tabular Info Start-->
+                <div class="row pt-2 mt-2">
+                    <div class="col">
+                        <div class="card" style="border-top: 5px solid purple;">
+                            <div class="card-header">
+                                <small class="text-uppercase"><strong>Trek Information (Trek ID: {{ trek.id }})</strong></small>
+                            </div>
+                            <form action="#" method="post">
+                                <div class="card-body p-2 row">
+                                    <div class="col-8">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody class="bg-light">
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Trek Name: </th>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="trek_name" value="{{ trek.trek_name }}" disabled>
+                                                    </td>
+                                                    <th class="ps-3">Start Date: </th>
+                                                    <td>
+                                                        <input type="date" class="form-control" value="{{ trek.start_date }}" disabled>
+                                                    </td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Location: </th>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="location" value="{{ trek.location }}" disabled>
+                                                    </td>
+                                                    <th class="ps-3">End Date: </th>
+                                                    <td>
+                                                        <input type="date" class="form-control" name="end_date" value="{{ trek.end_date }}" disabled>
+                                                    </td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Difficulty: </th>
+                                                    <td>
+                                                        <select class="form-select" name="difficulty" value="{{ trek.difficulty }}" disabled>
+                                                            <option value="easy" {{ 'selected' if trek.difficulty == 'easy' }}>Easy</option>
+                                                            <option value="moderate" {{ 'selected' if trek.difficulty == 'moderate' }}>Moderate</option>
+                                                            <option value="hard" {{ 'selected' if trek.difficulty == 'hard' }}>Hard</option>
+                                                        </select>
+                                                    </td>
+                                                    <th class="ps-3">Available Slots:</th>
+                                                    <td>
+                                                        {% if trek.status != 'completed' %}
+                                                        <input type="number" class="form-control" name="total_slots" value="{{ trek.total_slots }}" min="{{ participants_count }}" required>
+                                                        {% elif trek.status == 'completed' %}
+                                                        <input type="number" class="form-control" name="total_slots" value="{{ trek.total_slots }}" disabled>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Duration (Days): </th>
+                                                    <td>
+                                                        <input type="number" class="form-control" name="duration" value="{{ trek.duration }}" disabled>
+                                                    </td>
+                                                    <th class="ps-3">Mark Status: </th>
+                                                    {% if trek.status == 'open' or trek.status == 'closed' %}
+                                                    <td>
+                                                        <select class="form-select" name="status" required>
+                                                            <option value="open" {{ 'selected' if trek.status == 'open' }}>Open</option>
+                                                            <option value="closed" {{ 'selected' if trek.status == 'closed' }}>Closed</option>
+                                                            <option value="started" {{ 'selected' if trek.status == 'started' }}>Started</option>
+                                                            <option value="completed" {{ 'selected' if trek.status == 'completed' }}>Completed</option>
+                                                        </select>
+                                                    </td>
+                                                    {% elif trek.status == 'started' %}
+                                                    <td>
+                                                        <select class="form-select" name="status" required>
+                                                            <option value="started" {{ 'selected' if trek.status == 'started' }}>Started</option>
+                                                            <option value="completed" {{ 'selected' if trek.status == 'completed' }}>Completed</option>
+                                                        </select>
+                                                    </td>
+                                                    {% elif trek.status == 'completed' %}
+                                                    <td>
+                                                        <select class="form-select" name="status" disabled>
+                                                            <option value="completed" selected>Completed</option>
+                                                        </select>
+                                                    </td>
+                                                    {% endif %}
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-4">
+                                        <img class="img-fluid rounded img-thumbnail" 
+                                            src="{{ trek.trek_image_link }}"
+                                            alt="Trek Image"
+                                            style="max-width: 320px; max-height: 320px;">
+                                    </div>
+                                </div>
+
+                                <div class="card-footer text-end">
+                                    <a class="btn btn-sm btn-secondary me-2" href="{{ url_for('staff_my_treks') }}">Return to My Treks</a>
+                                    {% if trek.status != 'completed' %}
+                                    <input type="submit" class="btn btn-sm btn-primary me-3" value="Update">
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tabular Info End-->
+
+                <!-- 2nd Tabular Info Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-top: 5px solid purple;">    
+                            <div class="card-header">
+                                <small class="text-uppercase"><strong>Participants ({{ participants_count }})</strong></small>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">Trekker Name</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Booking Date</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for booking in bookings %}
+                                        <tr>
+                                            <td>{{ booking.trekker.full_name }}</td>
+                                            <td>{{ booking.trekker.user.username }}</td>
+                                            <td class="text-center">{{ booking.booking_date.strftime("%d %B %Y") }}</td>
+                                            <td class="text-center">{{ booking.status.capitalize() }}</td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm btn-primary" href="{{ url_for('staff_view_booking_details', booking_id = booking.id) }}">Details</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 2nd Tabular Info End-->
+
+            </div>
+            <!-- Content Area End-->
+        </div>
+    </div>
+    {% endblock %}

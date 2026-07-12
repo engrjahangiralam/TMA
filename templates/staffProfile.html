@@ -1,0 +1,114 @@
+{% set pageTitle = "Staff | Profile Details" %}
+{% set pageID = 24 %}
+{% extends 'baseTemplate.tpl.html' %}
+
+    {% block ContentArea %}
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!-- Sidebar Start-->
+            {% include 'sidebar.inc.html' %}
+
+            <!-- Sidebar End-->
+
+            <!-- Content Area Start-->
+            <div class="col-10 offset-2 p-4 bg-light rounded">
+                <!-- Page Header Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-left: 5px solid purple;">    
+                            <div class="card-body">
+                                <h4 class="text-uppercase" style="color: purple;">Profile Details</h4>
+                                <p class="h5 text-success">Click "Update" button to update profile information</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page Header End-->
+
+                <!-- Tabular Info Start-->
+                <div class="row pt-2 mt-2">
+                    <div class="col">
+                        <div class="card" style="border-top: 5px solid purple;">
+                            <div class="card-header">
+                                <small class="text-uppercase"><strong>Staff Details (Staff ID: {{ staff.id }})</strong></small>
+                            </div>
+                            <form action="#" method="post">
+                                <div class="card-body p-2 row">
+                                    <div class="col-5">
+                                        {% if staff.gender == 'male' %}
+                                        <img class="img-fluid rounded img-thumbnail" 
+                                            src="{{ url_for('static', filename = 'images/male.jpg') }}"
+                                            alt="Profile Image"
+                                            style="max-width: 320px; max-height: 320px;">
+
+                                        {% elif staff.gender == 'female' %}
+                                        <img class="img-fluid rounded img-thumbnail" 
+                                            src="{{ url_for('static', filename = 'images/female.jpg') }}"
+                                            alt="Profile Image"
+                                            style="max-width: 320px; max-height: 320px;">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-7">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody class="bg-light">
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Staff Name: </th>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="full_name" value="{{ staff.full_name }}" required>
+                                                    </td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Email: </th>
+                                                    <td>
+                                                        <input type="email" class="form-control" name="username" value="{{ staff.user.username }}" disabled>
+                                                    </td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Gender: </th>
+                                                    <td>
+                                                        <select class="form-select" name="gender" required>
+                                                            <option value="male" {{ 'selected' if staff.gender == 'male' }}>Male</option>
+                                                            <option value="female" {{ 'selected' if staff.gender == 'female' }}>Female</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Contact No: </th>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="contact_no" value="{{ staff.contact_no }}" required>
+                                                    </td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Profile Status: </th>
+                                                    <td>
+                                                        <input type="text" class="form-control" name="user_status" value="{{ staff.user.status.capitalize() }}" disabled>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="ps-3">Password:</th>
+                                                    <td>
+                                                        <input type="password" class="form-control" name="password" placeholder="Enter current or new password" required>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-end">  
+                                    <input type="submit" class="btn btn-sm btn-primary me-3" value="Update">
+                                    
+
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tabular Info End-->
+
+            </div>
+            <!-- Content Area End-->
+        </div>
+    </div>
+    {% endblock %}

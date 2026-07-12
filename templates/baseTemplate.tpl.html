@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ pageTitle }}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'bootstrap-5.3.8/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+</head>
+<body class="bg-dark">
+    <!-- Navbar Start-->
+    <nav class="navbar navbar-dark bg-dark sticky-top" style="height: 7vh;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><span class="h5">TMA | Trekking Management Application</span></a>
+            {% if session['username'] %}
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="#">
+                            <i class="bi bi-person-circle"></i>
+                            {% if session['user_role'] == "admin" %}
+                                {{ session['username'].capitalize() }}
+                            {% elif session['user_role'] == "staff" or session['user_role'] == "trekker" %}
+                                {{ session['full_name'] }}
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{{ url_for('logout') }}">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+    </nav>
+    <!-- Navbar End-->
+
+    <!-- Content Area Start-->
+    {% block ContentArea %}
+
+    {% endblock %}
+    <!-- Content Area End-->
+
+    <!-- Footer Start-->
+    <div class="container-fluid">
+        <div class="row bg-dark pt-2" style="height: 7vh;">
+            <div class="col text-center text-light">
+                <p>&copy; 2026 Trekking Management Application | Developed by Md. Jahangir Alam. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End-->
+
+    <script src="{{ url_for('static', filename = 'bootstrap-5.3.8/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/scripts.js') }}"></script>
+</body>
+</html>

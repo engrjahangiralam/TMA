@@ -1,0 +1,132 @@
+{% set pageTitle = "Trekker | Trek Details & Booking" %}
+{% set pageID = 33 %}
+{% extends 'baseTemplate.tpl.html' %}
+
+    {% block ContentArea %}
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!-- Sidebar Start-->
+            {% include 'sidebar.inc.html' %}
+
+            <!-- Sidebar End-->
+
+            <!-- Content Area Start-->
+            <div class="col-10 offset-2 p-4 bg-light rounded">
+                <!-- Page Header Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-left: 5px solid purple;">    
+                            <div class="card-body">
+                                <h4 class="text-uppercase" style="color: purple;">Trek Details & Booking</h4>
+                                <p class="h5 text-success">Click "Book Now" button to book a trek</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page Header End-->
+
+                <!-- Tabular Info Start-->
+                <div class="row pt-2 mt-2">
+                    <div class="col">
+                        <div class="card" style="border-top: 5px solid purple;">
+                            <div class="card-header">
+                                <small class="text-uppercase"><strong>Trek Details (Trek ID: {{ trek.id }})</strong></small>
+                            </div>
+                            <form action="#" method="post">
+                                <div class="card-body p-2 row">
+                                    <div class="col-7 me-5">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody class="bg-light">
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Trek Name: </th>
+                                                    <td>{{ trek.trek_name }}</td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Location: </th>
+                                                    <td>{{ trek.location }}</td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Difficulty: </th>
+                                                    <td>{{ trek.difficulty.capitalize() }}</td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Duration: </th>
+                                                    <td>{{ trek.duration }} Days</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="ps-3">Status:</th>
+                                                    <td>{{ trek.status.capitalize() }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="ps-3">Start Date: </th>
+                                                    <td>{{ trek.start_date.strftime("%d %B %Y") }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="ps-3">End Date: </th>
+                                                    <td>{{ trek.end_date.strftime("%d %B %Y") }}</td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Available Slots</th>
+                                                    <td>{{ trek.total_slots }}</td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Participants</th>
+                                                    <td>{{ trek.participant_count }}</td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Remaining Slots</th>
+                                                    <td>{{ (trek.total_slots) - (trek.participant_count) }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="ps-3">Description: </th>
+                                                    <td>{{ trek.trek_description }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-3 ps-2 pe-2">
+                                        <img class="img-fluid rounded img-thumbnail" 
+                                            src="{{ trek.trek_image_link }}"
+                                            alt="Trek Image"
+                                            style="max-width: 380px; max-height: 380px;">
+                                    </div>
+                                </div>
+                                <div class="card-footer text-end">
+                                    {% if booking.status =='booked' %}
+                                    <!-- Preventing Duplicate Booking -->
+                                    <span class="btn btn-sm btn-success me-3">Already Booked</span>
+                                    
+                                    {% elif trek.status =='started' %}
+                                    <!-- Preventing Booking when Trek is started -->
+                                    <span class="btn btn-sm btn-secondary me-3">Already Started</span>
+
+                                    {% elif trek.status =='completed' %}
+                                    <!-- Preventing Booking when Trek is completed -->
+                                    <span class="btn btn-sm btn-secondary me-3">Already Completed</span>
+
+                                    {% elif trek.status =='closed' %}
+                                    <!-- Preventing Booking when Trek status is closed -->
+                                    <span class="btn btn-sm btn-secondary me-3">Booking Closed</span>
+
+                                    {% elif ( (trek.total_slots) - (trek.participant_count) ) <= 0 %}
+                                    <!-- Preventing Booking when slots are full -->
+                                    <span class="btn btn-sm btn-secondary me-3">Slots Full</span>
+
+                                    {% elif booking.status !='booked' %}
+                                    <input type="submit" class="btn btn-sm btn-primary me-3" value="Book Now">
+                                    {% endif %}
+
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tabular Info End-->
+
+            </div>
+            <!-- Content Area End-->
+        </div>
+    </div>
+    {% endblock %}

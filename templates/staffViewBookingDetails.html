@@ -1,0 +1,109 @@
+{% set pageTitle = "Staff | Booking Details" %}
+{% set pageID = 23 %}
+{% extends 'baseTemplate.tpl.html' %}
+
+    {% block ContentArea %}
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!-- Sidebar Start-->
+            {% include 'sidebar.inc.html' %}
+
+            <!-- Sidebar End-->
+
+            <!-- Content Area Start-->
+            <div class="col-10 offset-2 p-4 bg-light rounded">
+                <!-- Page Header Start-->
+                <div class="row pt-2 mt-2 mb-4">
+                    <div class="col">
+                        <div class="card" style="border-left: 5px solid purple;">    
+                            <div class="card-body">
+                                <h4 class="text-uppercase" style="color: purple;">Booking Details</h4>
+                                <p class="h5 text-success">Click "Delete" button to delete a booking</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page Header End-->
+
+                <!-- Tabular Info Start-->
+                <div class="row pt-2 mt-2">
+                    <div class="col">
+                        <div class="card" style="border-top: 5px solid purple;">
+                            <div class="card-header">
+                                <small class="text-uppercase"><strong>Booking Details (Booking ID: {{ booking.id }})</strong></small>
+                            </div>
+                            <form action="#" method="post">
+                                <div class="card-body p-2 row">
+                                    <div class="col-4">
+                                        <img class="img-fluid rounded img-thumbnail" 
+                                            src="{{ booking.trek.trek_image_link }}"
+                                            alt="Trek Image"
+                                            style="max-width: 300px; max-height: 300px;">
+                                    </div>
+                                    <div class="col-8">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody class="bg-light">
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Trekker's Name: </th>
+                                                    <td>{{ booking.trekker.full_name }}</td>
+                                                    <th class="ps-3">Trek Name: </th>
+                                                    <td>{{ booking.trek.trek_name }}</td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Trekker's Email: </th>
+                                                    <td>{{ booking.trekker.user.username }}</td>
+                                                    <th class="ps-3">Location: </th>
+                                                    <td>{{ booking.trek.location }}</td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Trekker's Gender: </th>
+                                                    <td>{{ booking.trekker.gender.capitalize() }}</td>
+                                                    <th class="ps-3">Difficulty: </th>
+                                                    <td>{{ booking.trek.difficulty.capitalize() }}</td>
+                                                </tr>
+                                                <tr class="align-top">
+                                                    <th class="ps-3">Trekker's Contact No: </th>
+                                                    <td>{{ booking.trekker.contact_no }}</td>
+                                                    <th class="ps-3">Duration: </th>
+                                                    <td>{{ booking.trek.duration }} Days</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="ps-3">Trekker's Status: </th>
+                                                    <td>{{ booking.trekker.user.status.capitalize() }}</td>
+                                                    <th class="ps-3">Trek Status:</th>
+                                                    <td>{{ booking.trek.status.capitalize() }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="ps-3">Booking Date: </th>
+                                                    <td>{{ booking.booking_date.strftime("%d %B %Y") }}</td>
+                                                    <th class="ps-3">Booking Status</th>
+                                                    <td>{{ booking.status.capitalize() }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-end">
+                                    <a class="btn btn-sm btn-secondary me-3" href="{{ url_for('staff_view_bookings') }}">Return</a>
+                                    
+                                    {% if booking.status == 'booked' %}
+                                    <form action="#" method="post">
+                                        <input type="submit" class="btn btn-sm btn-danger me-3" value="Delete Booking">
+                                    </form>
+                                    {% else %}
+                                        <span class="btn btn-sm btn-warning">{{ booking.status.capitalize() }} booking cannot be deleted</span>
+                                    {% endif %}
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tabular Info End-->
+
+            </div>
+            <!-- Content Area End-->
+        </div>
+    </div>
+    {% endblock %}
