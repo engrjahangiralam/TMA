@@ -1,4 +1,4 @@
-# Trekking Management Application
+# TMA | Trekking Management Application
 An academic project for the course **CS2003P (Modern Application Development I Project)** of **BS in Data Science and Applications** program under the **Indian Institute of Technology Madras**
 
 ## Problem Statement
